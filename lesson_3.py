@@ -1,6 +1,6 @@
 #Проверяет правильность ввода имени
 def chech_name() -> str:
-    def print_error_name(error_name: str) -> str:
+    def print_error_name(error_name: str):
         print(error_name)
 
     while True:
