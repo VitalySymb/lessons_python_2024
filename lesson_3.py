@@ -16,7 +16,7 @@ def chech_name() -> str:
 
     return name_input
 
-#Проверяет правильности ввода имени
+#Проверяет правильности ввода возраста
 def check_age() -> int:
     def print_error_age(error_age: str):
         print(error_age)
