@@ -1,4 +1,3 @@
-# Проверяет правильность ввода имени
 
 def check_name(name: str) -> tuple:
     text = ''
@@ -10,8 +9,6 @@ def check_name(name: str) -> tuple:
 
     return (text, name)
 
-
-# Проверяет правильности ввода возраста
 def check_age(age: str) -> tuple:
     text = ''
     if not age.isdigit():
@@ -27,33 +24,30 @@ def check_age(age: str) -> tuple:
 
 
 def print_name_age():
-    list_func = [check_name, check_age]
+    list_func = (check_name, check_age)
     name_age = []
     count = 0
+    input_name = ('name', 'age')
 
-    while len(name_age) >= count:
-        # условие, при котором запустим все check функций
+    while count < 3:
 
-        if len(name_age) < len(list_func):
-            input_name = ('name', 'age')
-            text = ''
-            func = list_func[count](input(f'Input {input_name[count]}: '))
-            if func[0]:
-                text = func[0]
-            else:
-                name_age.append(func[1])
+        if count < 2:
+            user_input = input(f'Input {input_name[count]}: ')
+            text, parameter = list_func[count](user_input)
+
+            if not text:
+                name_age.append(parameter)
                 count += 1
+
         else:
-            count += 1
             name = name_age[0].capitalize()
             age = name_age[1]
-
             text = f'Hello {name}. You are {age} years old.'
-
             if 16 <= int(age) <= 17:
                 text = f"{text} Don't forget to get your first passport."
             elif 25 <= int(age) <= 26 or 45 <= int(age) <= 46:
                 text = f"{text} don't forget to replace your passport."
+            count += 1
 
         print(text)
 
