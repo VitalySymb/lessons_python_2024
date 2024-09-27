@@ -27,3 +27,76 @@
 # - Разрешается использовать только два раза print.
 #
 # - Нельзя использовать глобальные переменные
+def del_space(name: str) -> str:
+    return name.strip()
+
+def check_name(name: str) -> str:
+    text = ''
+
+    if not name:
+        text = 'error: Пустая строка'
+    elif len(name) < 3:
+        text = 'error: Минимальное кол-во символом 3'
+    elif name.strip().count(' ') > 1:
+        text = 'error: Разрешен один пробел'
+
+
+    return text
+
+
+def check_age(age: int) -> int:
+    text = ''
+
+    if age == 0:
+        text = 'error: Возраст не может быть 0'
+    elif age < 0:
+        text = 'error: Возраст не может иметь отрицательное значение'
+    elif age < 14:
+        text = 'error: Минимальный возраст 14 лет'
+
+
+    return text
+
+def print_hello(name, age):
+
+        text = f'Привет {name.capitalize()}, тебе {age} лет.'
+        if 16 <= age <= 17:
+            text = f'{text} Не забудь получить первый паспорт!'
+        if 25 <= age <= 26:
+            text = f'{text} Нужно заменить паспорт!'
+        elif 45 <= age <= 46:
+            text = f'{text} jНужно второй раз заменить паспорт!'
+
+        print(text)
+
+
+def main():
+    count = 0
+    while True:
+        if count == 0:
+            name = input('Введите имя: ')
+            text = check_name(name)
+
+            if not text:
+                name = del_space(name)
+                count += 1
+                continue
+
+        if count == 1:
+            age = int(input('Введите возраст: '))
+            text = check_age(age)
+
+            if not text:
+                count += 1
+                continue
+
+        print(text)
+
+        if count >= 2:
+            print_hello(name, age)
+            break
+
+
+
+
+main()
