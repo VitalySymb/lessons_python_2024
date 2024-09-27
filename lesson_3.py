@@ -1,63 +1,58 @@
-def check_name(name: str) -> str:
-    text = ''
-    if not name.isalpha():
-        text = 'the name must consist of letters'
-
-    elif len(name) <= 3:
-        text = 'longer than 3 characters'
-
-    return text
-
-
-def check_age(age: str) -> str:
-    text = ''
-    if not age.isdigit():
-        text = 'You need to enter a number: '
-
-    elif int(age) == 0:
-        text = 'age cannot be 0'
-
-    elif int(age) < 14:
-        text = 'age cannot be less than 14'
-
-    return text
-
-
-def print_name_age():
-    name = 'name'
-    age = 'age'
-    count = 0
-    flag = True
-
-    while flag:
-
-        if count < 2:
-            if count == 0:
-                user_input = input(f'Input {name}: ')
-                text = check_name(user_input)
-            elif count == 1:
-                user_input = input(f'Input {age}: ')
-                text = check_age(user_input)
-
-            if not text:
-
-                if count == 0:
-                    name = user_input
-                elif count == 1:
-                    age = user_input
-
-                count += 1
-                continue
-
-        else:
-            text = f'Hello {name.capitalize()}. You are {age} years old.'
-            if 16 <= int(age) <= 17:
-                text = f"{text} Don't forget to get your first passport."
-            elif 25 <= int(age) <= 26 or 45 <= int(age) <= 46:
-                text = f"{text} don't forget to replace your passport."
-            flag = False
-
-        print(text)
+# Написать программу, которая
+#
+# - Запрашивает у пользователя имя и возраст;
+#
+# - Проверяет минимальный возраст 14;
+#
+# - Проверяет, что имя введено и минимальное количество символов в имени — 3;
+#
+# - Проверяет возраст на отрицательное число или 0;
+#
+# - Проверяет имя на пустоту;
+#
+# - \* Проверяет, что возраст 16-17 лет и нужно не забыть получить первый паспорт; возраст 25-26 лет и нужно заменить
+#
+# паспорт; возраст 45-46 лет и нужно второй раз заменить паспорт;
+#
+# - Выводит либо текст с ошибкой (по каждому условию разный текст ошибки), либо приветствие пользователя с его именем (с
+#
+# заглавной буквы), указанием возраста и *советом получить/заменить паспорт (если совет актуален).
+#
+# - \* Совет с паспортом выводить только в том случае, если отображается приветствие.
+#
+# ### Ограничения:
+#
+# - только один раз можно использовать print
 
 
-print_name_age()
+name = input('Введите имя: ')
+
+text = ''
+
+if not name:
+    text = 'Пустая строка'
+elif len(name) < 3:
+    text = 'Минимальное кол-во символом 3'
+
+if not text:
+    age = int(input('Введите возраст: '))
+
+    if age == 0:
+        text = 'Возраст не может быть 0'
+    elif age < 0:
+        text = 'Возраст не может иметь отрицательное значение'
+    elif age < 14:
+        text = 'Минимальный возраст 14 лет'
+
+
+
+    if not text:
+        text = f'Привет {name.capitalize()}, тебе {age} лет.'
+        if 16 <= age <= 17:
+            text = f'{text} Не забудь получить первый паспорт!'
+        if 25 <= age <= 26:
+            text = f'{text} Нужно заменить паспорт!'
+        elif 45 <= age <= 46:
+            text = f'{text} jНужно второй раз заменить паспорт!'
+
+print(text)
