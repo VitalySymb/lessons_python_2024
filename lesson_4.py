@@ -62,41 +62,30 @@ def print_hello(name, age):
         text = f'Привет {name.capitalize()}, тебе {age} лет.'
         if 16 <= age <= 17:
             text = f'{text} Не забудь получить первый паспорт!'
-        if 25 <= age <= 26:
+        elif 25 <= age <= 26:
             text = f'{text} Нужно заменить паспорт!'
         elif 45 <= age <= 46:
-            text = f'{text} jНужно второй раз заменить паспорт!'
+            text = f'{text} Нужно второй раз заменить паспорт!'
 
         print(text)
 
 
 def main():
-    count = 0
+    text = ''
     while True:
-        if count == 0:
+        if not text:
             name = input('Введите имя: ')
             text = check_name(name)
 
-            if not text:
-                name = del_space(name)
-                count += 1
-                continue
-
-        if count == 1:
+        if not text:
             age = int(input('Введите возраст: '))
             text = check_age(age)
 
-            if not text:
-                count += 1
-                continue
-
-        print(text)
-
-        if count >= 2:
+        if not text:
             print_hello(name, age)
             break
 
-
-
+        print(text)
+        text = ''
 
 main()
