@@ -31,7 +31,7 @@ def del_space(name: str) -> str:
     return name.strip()
 
 def check_name(name: str) -> str:
-    text = ''
+    text = None
 
     if not name:
         text = 'error: Пустая строка'
@@ -45,7 +45,7 @@ def check_name(name: str) -> str:
 
 
 def check_age(age: int) -> int:
-    text = ''
+    text = None
 
     if age == 0:
         text = 'error: Возраст не может быть 0'
@@ -71,21 +71,21 @@ def print_hello(name, age):
 
 
 def main():
-    text = ''
+    text = None
     while True:
-        if not text:
+        if text is None:
             name = input('Введите имя: ')
             text = check_name(name)
 
-        if not text:
+        if text is None:
             age = int(input('Введите возраст: '))
             text = check_age(age)
 
-        if not text:
+        if text is None:
             print_hello(name, age)
             break
 
         print(text)
-        text = ''
+        text = None
 
 main()
