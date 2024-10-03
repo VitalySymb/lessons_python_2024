@@ -13,10 +13,8 @@ def palindrome(word: str) -> bool:
 
         if not word[i].isalpha():
             i += 1
-            continue
         elif not word[j].isalpha():
             j -= 1
-            continue
         elif word[i] != word[j]:
             return False
 
