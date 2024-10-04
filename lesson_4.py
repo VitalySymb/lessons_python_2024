@@ -19,11 +19,13 @@
 # - Пользователю отображать попытки начинаю с 1Б в коде попытки должны быть с 0
 
 from random import randint
+
+
 def clear_whitespaces(name: str) -> str:
     return name.strip()
 
-def validate_name(name: str) -> None:
 
+def validate_name(name: str) -> None:
     if not name:
         raise Exception('name error: Пустая строка')
     elif len(name) < 3:
@@ -32,9 +34,7 @@ def validate_name(name: str) -> None:
         raise Exception('name error: Разрешен один пробел')
 
 
-
 def validate_age(age: int) -> None:
-
     if age == 0:
         raise Exception('age error: Возраст не может быть 0')
     elif age < 0:
@@ -43,9 +43,7 @@ def validate_age(age: int) -> None:
         raise Exception('age error: Минимальный возраст 14 лет')
 
 
-
 def print_hello(name: str, age: int):
-
     text = f'Привет {name.capitalize()}, тебе {age} лет.'
     if 16 <= age <= 17:
         text = f'{text} Не забудь получить первый паспорт!'
@@ -55,6 +53,7 @@ def print_hello(name: str, age: int):
         text = f'{text} Нужно второй раз заменить паспорт!'
 
     print(text)
+
 
 def guess_number_game(name: str):
     game_count = 0
@@ -70,20 +69,20 @@ def guess_number_game(name: str):
             break
         else:
             game_count += 1
-            text = f'число {number_user+1} не подходит. Твоя {game_count} попытка: '
+            text = f'число {number_user + 1} не подходит. Твоя {game_count} попытка: '
 
 
 def main():
     error_counts = 0
-    text = f'Введите имя: '
+    text = 'Введите имя: '
     while True:
-        name = input(text)
-        text = f'Ваша {error_counts+2} попытка,\nвведите имя: '
-        age = input('введите возраст: ')
+        name = clear_whitespaces(input(text))
+        text = f'Ваша {error_counts + 2} попытка,\nвведите имя: '
+        age = clear_whitespaces(input('введите возраст: '))
 
         try:
-            age = int(clear_whitespaces(age))
-            validate_name(clear_whitespaces(name))
+            age = int(age)
+            validate_name(name)
             validate_age(age)
 
         except (ValueError, Exception) as e:
