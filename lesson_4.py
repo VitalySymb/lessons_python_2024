@@ -1,55 +1,61 @@
-# 3. Функции на проверку имени, возраста и совет паспорт должны возвращать None
-# (иначе говоря, ничего не должны возвращать), если не было ошибок или нет советов
+# - guess_number_game - игра "угадай число",
+# где пользователь вводит число и пытается отгадать
+# случайно сгенерированное число от 1 до 5
 #
-# 4. Сделать функцию, которая генерирует случайное число от 0 до 10,
-# и в бесконечном цикле просит пользователя угадать это число,
-# если пользователь ввёл имя и возраст корректные
+# - Все функций валидации должны всегда возвращать 'None',
+# а в случае ошибки - делать raise Exception (текст ошибки).
+#
+# - В функции 'main' необходимо отловить ошибки из функции validate.
+# Вывести пользователю: "Я поймал ошибку: {текст ошибки}.
+# И если были ошибки, тогда вам необходимо заново запросить у пользователя ввод данных.
+#
+# - Перед запросом данных в функции "main" пользователю должно печататься
+# номер текущей попытки ввода данных.
+#
+# - Во время игры "угадай число" тоже должен быть счетчик попыток.
+
 from random import randint
-def del_space(name: str) -> str:
+def clear_whitespaces(name: str) -> str:
     return name.strip()
 
-def check_name(name: str) -> str:
-    text = None
+def validate_name(name: str) -> None:
 
     if not name:
-        text = 'error: Пустая строка'
+        raise Exception('name error: Пустая строка')
     elif len(name) < 3:
-        text = 'error: Минимальное кол-во символом 3'
+        raise Exception('name error: Минимальное кол-во символом 3')
     elif name.strip().count(' ') > 1:
-        text = 'error: Разрешен один пробел'
+        raise Exception('name error: Разрешен один пробел')
 
 
-    return text
 
-
-def check_age(age: int) -> int:
-    text = None
+def validate_age(age: int) -> None:
 
     if age == 0:
-        text = 'error: Возраст не может быть 0'
+        raise Exception('age error: Возраст не может быть 0')
     elif age < 0:
-        text = 'error: Возраст не может иметь отрицательное значение'
+        raise Exception('age error: Возраст не может иметь отрицательное значение')
     elif age < 14:
-        text = 'error: Минимальный возраст 14 лет'
+        raise Exception('age error: Минимальный возраст 14 лет')
 
 
-    return text
 
-def print_hello(name, age):
+def print_hello(name: str, age: int):
 
-        text = f'Привет {name.capitalize()}, тебе {age} лет.'
-        if 16 <= age <= 17:
-            text = f'{text} Не забудь получить первый паспорт!'
-        elif 25 <= age <= 26:
-            text = f'{text} Нужно заменить паспорт!'
-        elif 45 <= age <= 46:
-            text = f'{text} Нужно второй раз заменить паспорт!'
+    text = f'Привет {name.capitalize()}, тебе {age} лет.'
+    if 16 <= age <= 17:
+        text = f'{text} Не забудь получить первый паспорт!'
+    elif 25 <= age <= 26:
+        text = f'{text} Нужно заменить паспорт!'
+    elif 45 <= age <= 46:
+        text = f'{text} Нужно второй раз заменить паспорт!'
 
-        print(text)
+    print(text)
 
-def number_generation(name: str):
-    random_number = randint(1, 10)
-    text = f"{name.capitalize()}, угадайте число от 1 до 10: "
+def guess_number_game(name: str):
+    game_count = 1
+    random_number = randint(1, 5)
+    text = f"{name.capitalize()}, угадайте число от 1 до 5:  "
     while True:
 
         number_user = int(input(text))
@@ -59,26 +65,29 @@ def number_generation(name: str):
             print(text)
             break
         else:
-            text = f'число {number_user} не подходит. Попробуй еще раз: '
+            game_count += 1
+            text = f'число {number_user} не подходит. Твоя {game_count} попытка: '
 
 
 def main():
-    text = None
+    error_counts = 1
     while True:
-        if text is None:
-            name = input('Введите имя: ')
-            text = check_name(name)
 
-        if text is None:
-            age = int(input('Введите возраст: '))
-            text = check_age(age)
+        name = input(f'Ваша {error_counts} попытка, ведите имя: ')
+        age = int(input('введите возраст: '))
 
-        if text is None:
-            print_hello(name, age)
-            number_generation(name)
-            break
+        try:
+            validate_name(name)
+            validate_age(age)
 
-        print(text)
-        text = None
+        except Exception as e:
+            print(f'Я поймал ошибку: {e}')
+            error_counts += 1
+            continue
+
+        print_hello(name, age)
+        guess_number_game(name)
+        break
+
 
 main()
