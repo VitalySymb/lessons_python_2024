@@ -8,11 +8,15 @@
 # - В функции 'main' необходимо отловить ошибки из функции validate.
 # Вывести пользователю: "Я поймал ошибку: {текст ошибки}.
 # И если были ошибки, тогда вам необходимо заново запросить у пользователя ввод данных.
+
+# В функции main обрабатывать ошибку ValueError
 #
 # - Перед запросом данных в функции "main" пользователю должно печататься
 # номер текущей попытки ввода данных.
 #
 # - Во время игры "угадай число" тоже должен быть счетчик попыток.
+
+# - Пользователю отображать попытки начинаю с 1Б в коде попытки должны быть с 0
 
 from random import randint
 def clear_whitespaces(name: str) -> str:
@@ -53,7 +57,7 @@ def print_hello(name: str, age: int):
     print(text)
 
 def guess_number_game(name: str):
-    game_count = 1
+    game_count = 0
     random_number = randint(1, 5)
     text = f"{name.capitalize()}, угадайте число от 1 до 5:  "
     while True:
@@ -66,21 +70,23 @@ def guess_number_game(name: str):
             break
         else:
             game_count += 1
-            text = f'число {number_user} не подходит. Твоя {game_count} попытка: '
+            text = f'число {number_user+1} не подходит. Твоя {game_count} попытка: '
 
 
 def main():
-    error_counts = 1
+    error_counts = 0
+    text = f'Введите имя: '
     while True:
-
-        name = input(f'Ваша {error_counts} попытка, ведите имя: ')
-        age = int(input('введите возраст: '))
+        name = input(text)
+        text = f'Ваша {error_counts+2} попытка,\nвведите имя: '
+        age = input('введите возраст: ')
 
         try:
-            validate_name(name)
+            age = int(clear_whitespaces(age))
+            validate_name(clear_whitespaces(name))
             validate_age(age)
 
-        except Exception as e:
+        except (ValueError, Exception) as e:
             print(f'Я поймал ошибку: {e}')
             error_counts += 1
             continue
