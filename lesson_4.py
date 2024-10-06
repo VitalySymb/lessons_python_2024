@@ -19,7 +19,8 @@
 # - Пользователю отображать попытки начинаю с 1Б в коде попытки должны быть с 0
 
 from random import randint
-
+import validator
+import exceptions
 
 def clear_whitespaces(name: str) -> str:
     return name.strip()
@@ -59,6 +60,7 @@ def guess_number_game(name: str):
     game_count = 0
     random_number = randint(1, 5)
     text = f"{name.capitalize()}, угадайте число от 1 до 5:  "
+
     while True:
 
         number_user = int(input(text))
