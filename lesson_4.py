@@ -22,29 +22,9 @@ from random import randint
 import validator
 import exceptions
 
-def clear_whitespaces(name: str) -> str:
-    return name.strip()
 
-
-def validate_name(name: str) -> None:
-    if not name:
-        raise Exception('name error: Пустая строка')
-    elif len(name) < 3:
-        raise Exception('name error: Минимальное кол-во символом 3')
-    elif name.strip().count(' ') > 1:
-        raise Exception('name error: Разрешен один пробел')
-
-
-def validate_age(age: int) -> None:
-    if age == 0:
-        raise Exception('age error: Возраст не может быть 0')
-    elif age < 0:
-        raise Exception('age error: Возраст не может иметь отрицательное значение')
-    elif age < 14:
-        raise Exception('age error: Минимальный возраст 14 лет')
-
-
-def print_hello(name: str, age: int):
+def print_hello(name: str, age: str):
+    age = int(age)
     text = f'Привет {name.capitalize()}, тебе {age} лет.'
     if 16 <= age <= 17:
         text = f'{text} Не забудь получить первый паспорт!'
@@ -53,7 +33,7 @@ def print_hello(name: str, age: int):
     elif 45 <= age <= 46:
         text = f'{text} Нужно второй раз заменить паспорт!'
 
-    print(text)
+    print(f'\n{text}')
 
 
 def guess_number_game(name: str):
@@ -75,22 +55,27 @@ def guess_number_game(name: str):
 
 
 def main():
+    validation = validator.Validator()
     error_counts = 0
     text = 'Введите имя: '
     while True:
-        name = clear_whitespaces(input(text))
+        name = input(text)
         text = f'Ваша {error_counts + 2} попытка,\nвведите имя: '
-        age = clear_whitespaces(input('введите возраст: '))
+        age = input('введите возраст: ')
+        name_age_date_time = validator.DataWithDate(name, age)
 
         try:
-            age = int(age)
-            validate_name(name)
-            validate_age(age)
+            validation.validate(name_age_date_time)
 
-        except (ValueError, Exception) as e:
+        except exceptions.ValidationError as e:
             print(f'Я поймал ошибку: {e}')
             error_counts += 1
             continue
+        text = validation.input_time()
+        print(text)
+
+        name = name_age_date_time.name
+        age = name_age_date_time.age
 
         print_hello(name, age)
         guess_number_game(name)
