@@ -87,8 +87,6 @@ def main():
             print(f'Я поймал ошибку: {e}')
             error_counts += 1
             continue
-        text = validation.input_time()
-        print(text)
 
         name = name_age_date_time.name
         age = name_age_date_time.age
