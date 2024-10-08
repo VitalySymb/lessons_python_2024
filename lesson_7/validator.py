@@ -24,6 +24,8 @@ class Validator:
         self.data_history = []
 
     def _validate_name(self):
+        """Проверка имени на определенные условия. При нарушении условий
+        вызывается ошибка, которая отлавливаешься в main """
 
         name = self.data_history[-1].name
 
@@ -35,6 +37,8 @@ class Validator:
             raise ValidationError('name error: Разрешен один пробел')
 
     def _validate_age(self):
+        """Проверка возраста на определенные условия. При нарушении условий
+        вызывается ошибка, которая отлавливаешься в main """
 
         age = self.data_history[-1].age
 
@@ -51,6 +55,10 @@ class Validator:
             raise ValidationError('age error: Минимальный возраст 14 лет')
 
     def validate(self, data: Data):
+        """Получение экземляра класса Data и сохранение в list.
+        Вызов метода проверки на условие верных данных пользователя.
+        Вызов метода получения и печати времени ввода данных пользователя"""
+
         self.data_history.append(data)
 
         self._validate_name()
@@ -59,6 +67,8 @@ class Validator:
         self._input_time()
 
     def _input_time(self):
+        """Получаем дату начала/конец ввода данных и сохранения их в формате H:M:S.
+        Получаем общее время пользователя, конвертируем их в нужный формат и отображаем."""
 
         first_time = self.data_history[0].data_now.strftime("%H:%M:%S")
         last_time = self.data_history[-1].data_now.strftime("%H:%M:%S")

@@ -40,6 +40,8 @@ import exceptions
 
 
 def print_hello(name: str, age: str):
+    """Выводит пользователю совет по получении паспорта при условии
+    определенного возраста."""
     age = int(age)
     text = f'Привет {name.capitalize()}, тебе {age} лет.'
     if 16 <= age <= 17:
@@ -53,6 +55,8 @@ def print_hello(name: str, age: str):
 
 
 def guess_number_game(name: str):
+    """Игра "угадай число". Генерирует случайное число,
+     которое пользователь должен угадать."""
     game_count = 0
     random_number = randint(1, 5)
     text = f"{name.capitalize()}, угадайте число от 1 до 5:  "
