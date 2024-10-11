@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from exceptions import ValidationError
 
 
@@ -16,7 +16,7 @@ class Data:
 class DataWithDate(Data):
     def __init__(self, name, age):
         super().__init__(name, age)
-        self.data_now = datetime.now()
+        self.data_now = datetime.now(timezone.utc)
 
 
 class Validator:
