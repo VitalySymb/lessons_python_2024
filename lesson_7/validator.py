@@ -21,7 +21,7 @@ class DataWithDate(Data):
 
 class Validator:
     def __init__(self):
-        self.data_history = []
+        self.data_history: list[Data] = []
 
     def _validate_name(self):
         """Проверка имени на определенные условия. При нарушении условий
@@ -74,8 +74,17 @@ class Validator:
         last_time = self.data_history[-1].data_now.strftime("%H:%M:%S")
 
         total_time = self.data_history[-1].data_now - self.data_history[0].data_now
-        horse = total_time.seconds // 3600
-        minutes = total_time.seconds % 3600 // 60
-        seconds = total_time.seconds % 3600 % 60
+
+        seconds = int(total_time.total_seconds())
+        minutes, seconds = divmod(seconds, 60)
+        hours, minutes = divmod(minutes, 60)
+
+        # hours = total_time.seconds // 3600
+        # minutes = total_time.seconds % 3600 // 60
+        # seconds = total_time.seconds % 3600 % 60
+
         print(
-            f'\nВы сделали {len(self.data_history)} попыток\nпервая попытка: {first_time}\nпоследняя попытка: {last_time}\nобщее время: {horse}:{minutes}:{seconds}')
+             f'\nВы сделали {len(self.data_history)} попыток\n'
+             f'первая попытка: {first_time}\n'
+             f'последняя попытка: {last_time}\n'
+             f'общее время: {hours}:{minutes}:{seconds}')
