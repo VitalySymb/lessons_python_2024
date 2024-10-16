@@ -43,7 +43,7 @@ def main():
             print(f'Я поймал ошибку: {e}')
             continue
 
-        guess_number_game(authentication.login)
+        # guess_number_game(authentication.login)
         break
 
 

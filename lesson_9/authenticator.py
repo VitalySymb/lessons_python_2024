@@ -4,68 +4,58 @@ import exceptions
 
 
 class Authenticator:
-    def __init__(self, login: str = None, password: str = None,
-                 last_success_login_at: datetime = None, errors_count: int = 0):
-        self.login = login
-        self.password = password
-        self.last_success_login_at = last_success_login_at
-        self.errors_count = errors_count
+    def __init__(self):
+        self.login: str | None = None
+        self.password: str | None = None
+        self.last_success_login_at: datetime | None = None
+        self.errors_count: int = 0
 
         if self._is_auth_file_exist():
             self._read_auth_file()
 
-    def _read_auth_file(self):
-        list_data_auth = []
-
-        with open('auth.txt') as file:
-            for f in file:
-                list_data_auth.append(f.rstrip())
-
-        self.login = list_data_auth[0]
-        self.password = list_data_auth[1]
-        self.last_success_login_at = datetime.fromisoformat(list_data_auth[2])  # из str в datetime
-        self.errors_count = int(list_data_auth[3])
-
-    def _is_auth_file_exist(self) -> bool:
-        if path.exists('auth.txt'):
-            return True
-        return False
-
     def registrate(self, login: str, password: str):
+        """ Registration. Checking a file for absence """
         if self._is_auth_file_exist() or self.login is not None:
-            raise exceptions.RegistrationError('Пользователь уже существует')
+            self.errors_count += 1
+            raise exceptions.RegistrationError('Такое имя уже есть')
 
-        with open('auth.txt', 'w') as file:
-            file.write(f'{login}\n'
-                       f'{password}\n'
-                       f'{datetime.now(timezone.utc)}\n'
-                       f'{self.errors_count}\n')
-        self._read_auth_file()
+        self.login = login
+        self.password = password
+        self.last_success_login_at = datetime.now(timezone.utc)
+        self._update_auth_file()
 
     def authorize(self, login: str, password: str):
+        """ File verification
+            Checking the correspondence of login and password"""
         if self.login is None:
             raise exceptions.AuthorizationError('Такого пользователя нет, нужно зарегистрироваться')
 
-        with open('auth.txt') as f:
-            data_list = f.readlines()
-            login_data = data_list[0].strip()
-            password_data = data_list[1].strip()
-
-        if login_data == login.strip() and password_data == password.strip():
-            self._update_auth_file()
-            print(
-                f'Поздравляю {self.login} вы авторизовались!\nВам понадобилась с {self.errors_count + 1} попытки\n{self.last_success_login_at.strftime("%d-%m-%y %H:%M:%S")}')
-        else:
+        if not (self.login == login.strip() and self.password == password.strip()):
             self.errors_count += 1
             raise exceptions.AuthorizationError('Не верный логин или пароль, попробуйте еще раз')
 
-    def _update_auth_file(self):
-        self.last_success_login_at = datetime.now(timezone.utc)
-        with open('auth.txt', 'r') as f:
-            list_data = f.readlines()
+        self._update_auth_file()
+        print(
+            f'Поздравляю {self.login} вы авторизовались!\nВам понадобилась {self.errors_count + 1} попытки\n{self.last_success_login_at.strftime("%d-%m-%y %H:%M:%S")}')
 
-        list_data[2] = f'{self.last_success_login_at}\n'
-        list_data[3] = f'{self.errors_count}\n'
+    def _update_auth_file(self):
+        """ updating data in a file  """
 
         with open('auth.txt', 'w') as f:
-            f.writelines(list_data)
+            f.write(f'{self.login}\n')
+            f.write(f'{self.password}\n')
+            f.write(f'{self.last_success_login_at.isoformat()}\n')
+            f.write(f'{self.errors_count}\n')
+
+    def _read_auth_file(self):
+        """ reading from file and defining into variables """
+
+        with open('auth.txt', 'r') as f:
+            self.login = f.readline().strip()
+            self.password = f.readline().strip()
+        self.last_success_login_at = datetime.now(timezone.utc)
+
+    @staticmethod
+    def _is_auth_file_exist() -> bool:
+        """ checking for file availability """
+        return path.exists('auth.txt')
